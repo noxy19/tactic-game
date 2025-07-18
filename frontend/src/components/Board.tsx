@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import map2 from '../maps/map2.png';
 
 interface Position {
   x: number;
@@ -15,6 +16,14 @@ interface BoardProps {
 }
 
 export default function Board({ size, playerPositions, isYourTurn, selfId, onCellClick, highlightCells }: BoardProps) {
+  // Calculate total board size including gaps and padding
+  const totalWidth = useMemo(() => {
+    const cellsWidth = size * 40; // Each cell is 40px
+    const gapsWidth = (size - 1) * 2; // 2px gaps between cells
+    const padding = 8; // 4px padding on each side
+    return cellsWidth + gapsWidth + padding;
+  }, [size]);
+
   const cells: JSX.Element[] = [];
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
@@ -31,11 +40,12 @@ export default function Board({ size, playerPositions, isYourTurn, selfId, onCel
           style={{
             width: 40,
             height: 40,
-            background: inRange ? '#fff4b3' : (x + y) % 2 === 0 ? '#b9c6d0' : '#e3e9ee',
+            backgroundColor: inRange ? 'rgba(255, 244, 179, 0.5)' : 'rgba(255, 255, 255, 0.1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: isYourTurn ? 'pointer' : 'default',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
           }}
         >
           {occupantId && (
@@ -59,9 +69,15 @@ export default function Board({ size, playerPositions, isYourTurn, selfId, onCel
         display: 'grid',
         gridTemplateColumns: `repeat(${size}, 40px)`,
         gap: 2,
-        backgroundImage: 'url(frontend/src/maps/map2.png)',
-        backgroundSize: 'cover',
+        padding: 4,
+        width: totalWidth,
+        height: totalWidth,
+        backgroundImage: `url(${map2})`,
+        backgroundSize: `${totalWidth}px ${totalWidth}px`,
         backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        border: '2px solid rgba(255, 255, 255, 0.3)',
+        borderRadius: 8,
       }}
     >
       {cells}
