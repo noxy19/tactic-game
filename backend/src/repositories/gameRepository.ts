@@ -1,7 +1,8 @@
-import { Position } from "../domain/board";
+import { Board, Position } from "../domain/board";
 import { PlayerID } from "./inMemoryGameRepository";
 
 export interface GameRepository {
+  getBoard(): Board;
   getPlayers(): PlayerID[];
   addPlayer(playerID: PlayerID): void;
   removePlayer(playerID: PlayerID): void;

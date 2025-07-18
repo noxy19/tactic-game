@@ -1,4 +1,4 @@
-import { Position } from "../domain/board";
+import { Board, Position } from "../domain/board";
 import { GameRepository } from "./gameRepository";
 
 export type PlayerID = string;
@@ -8,6 +8,14 @@ export class InMemoryGameRepository implements GameRepository {
   private positions: Record<PlayerID, { x: number; y: number }> = {};
   private lifePoints: Record<PlayerID, number> = {};
   private actionPoints: Record<PlayerID, number> = {};
+
+  constructor(private readonly board: Board) {
+    this.board = board;
+  }
+
+  getBoard() {
+    return this.board;
+  }
 
   getPlayers() {
     return [...this.playerIds];
