@@ -1,15 +1,18 @@
+import { Position } from "../domain/board";
+import { PlayerID } from "./inMemoryGameRepository";
+
 export interface GameRepository {
-  getPlayers(): string[];
-  addPlayer(id: string): void;
-  removePlayer(id: string): void;
-  getPosition(id: string): { x: number; y: number } | undefined;
-  setPosition(id: string, pos: { x: number; y: number }): void;
-  getAllPositions(): Record<string, { x: number; y: number }>;
-  getLife(id: string): number | undefined;
-  setLife(id: string, life: number): void;
-  getAllLife(): Record<string, number>;
+  getPlayers(): PlayerID[];
+  addPlayer(playerID: PlayerID): void;
+  removePlayer(playerID: PlayerID): void;
+  getPosition(playerID: PlayerID): Position | undefined;
+  setPosition(playerID: PlayerID, pos: Position): void;
+  getAllPositions(): Record<PlayerID, Position>;
+  getLife(playerID: PlayerID): number | undefined;
+  setLife(playerID: PlayerID, life: number): void;
+  getAllLife(): Record<PlayerID, number>;
 
   /* Action Points */
-  getAp(id: string): number | undefined;
-  setAp(id: string, ap: number): void;
-} 
+  getAp(playerID: PlayerID): number | undefined;
+  setAp(playerID: PlayerID, ap: number): void;
+}

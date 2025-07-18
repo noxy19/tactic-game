@@ -1,55 +1,58 @@
-import { GameRepository } from './gameRepository';
+import { Position } from "../domain/board";
+import { GameRepository } from "./gameRepository";
+
+export type PlayerID = string;
 
 export class InMemoryGameRepository implements GameRepository {
-  private playerIds: string[] = [];
-  private positions: Record<string, { x: number; y: number }> = {};
-  private lifePoints: Record<string, number> = {};
-  private actionPoints: Record<string, number> = {};
+  private playerIds: PlayerID[] = [];
+  private positions: Record<PlayerID, { x: number; y: number }> = {};
+  private lifePoints: Record<PlayerID, number> = {};
+  private actionPoints: Record<PlayerID, number> = {};
 
   getPlayers() {
     return [...this.playerIds];
   }
 
-  addPlayer(id: string) {
-    this.playerIds.push(id);
+  addPlayer(playerID: PlayerID) {
+    this.playerIds.push(playerID);
   }
 
-  removePlayer(id: string) {
-    this.playerIds = this.playerIds.filter((p) => p !== id);
-    delete this.positions[id];
-    delete this.lifePoints[id];
-    delete this.actionPoints[id];
+  removePlayer(playerID: PlayerID) {
+    this.playerIds = this.playerIds.filter((p) => p !== playerID);
+    delete this.positions[playerID];
+    delete this.lifePoints[playerID];
+    delete this.actionPoints[playerID];
   }
 
-  getPosition(id: string) {
-    return this.positions[id];
+  getPosition(playerID: PlayerID) {
+    return this.positions[playerID];
   }
 
-  setPosition(id: string, pos: { x: number; y: number }) {
-    this.positions[id] = pos;
+  setPosition(playerID: PlayerID, pos: Position) {
+    this.positions[playerID] = pos;
   }
 
   getAllPositions() {
     return { ...this.positions };
   }
 
-  getLife(id: string) {
-    return this.lifePoints[id];
+  getLife(playerID: PlayerID) {
+    return this.lifePoints[playerID];
   }
 
-  setLife(id: string, life: number) {
-    this.lifePoints[id] = life;
+  setLife(playerID: PlayerID, life: number) {
+    this.lifePoints[playerID] = life;
   }
 
   getAllLife() {
     return { ...this.lifePoints };
   }
 
-  getAp(id: string) {
-    return this.actionPoints[id];
+  getAp(playerID: PlayerID) {
+    return this.actionPoints[playerID];
   }
 
-  setAp(id: string, ap: number) {
-    this.actionPoints[id] = ap;
+  setAp(playerID: PlayerID, ap: number) {
+    this.actionPoints[playerID] = ap;
   }
-} 
+}
