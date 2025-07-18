@@ -59,6 +59,9 @@ export default function Board({ size, playerPositions, isYourTurn, selfId, onCel
         display: 'grid',
         gridTemplateColumns: `repeat(${size}, 40px)`,
         gap: 2,
+        backgroundImage: 'url(frontend/src/maps/map2.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       {cells}
