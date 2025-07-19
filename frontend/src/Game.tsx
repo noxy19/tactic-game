@@ -10,7 +10,7 @@ interface Message {
 
 const attackRanges: Record<'basic' | 'heavy', number> = { basic: 3, heavy: 1 };
 
-export default function Game() {
+export default function Game({userName}: {userName: string}) {
   const socketRef = useRef<WebSocket>();
   const [log, setLog] = useState<string[]>([]);
   const [isYourTurn, setIsYourTurn] = useState(false);
@@ -18,6 +18,7 @@ export default function Game() {
   const [positions, setPositions] = useState<Record<string, { x: number; y: number }>>({});
   const positionsRef = useRef<Record<string, { x: number; y: number }>>({});
   const [life, setLife] = useState<Record<string, number>>({});
+  const [names, setNames] = useState<Record<string, string>>({});
   const [apLeft, setApLeft] = useState(0);
   const [selectedAttack, setSelectedAttack] = useState<'basic' | 'heavy'>('basic');
   const selfIdRef = useRef<string>('');
@@ -32,7 +33,7 @@ export default function Game() {
       socket.send(
         JSON.stringify({
           type: 'join',
-          payload: { id }
+          payload: { id: id, name: userName }
         })
       );
     });
@@ -47,6 +48,7 @@ export default function Game() {
           setPositions(message.payload.positions);
           positionsRef.current = message.payload.positions;
           setLife(message.payload.life);
+          setNames(message.payload.names)
           break;
         case 'spawn':
           setPositions((prev) => {
@@ -55,6 +57,7 @@ export default function Game() {
             return updated;
           });
           setLife((prev) => ({ ...prev, [message.payload.id]: message.payload.life }));
+          setNames((prev) => ({ ...prev, [message.payload.id]: message.payload.name }));
           break;
         case 'your-turn':
           setLog((prev) => [...prev, 'Your turn!']);
@@ -190,7 +193,7 @@ export default function Game() {
         <ul>
           {Object.entries(life).map(([id, hp]) => (
             <li key={id} style={{ color: id === selfIdRef.current ? 'dodgerblue' : 'crimson' }}>
-              {id === selfIdRef.current ? 'You' : id}: {hp}
+              {id === selfIdRef.current ? `${userName} (you)` : names[id]}: {hp}
             </li>
           ))}
         </ul>

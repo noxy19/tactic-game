@@ -11,7 +11,10 @@ export interface GameRepository {
   getAllPositions(): Record<PlayerID, Position>;
   getLife(playerID: PlayerID): number | undefined;
   setLife(playerID: PlayerID, life: number): void;
+  getName(playerID: PlayerID): string | undefined;
+  setName(playerID: PlayerID, name: string): void;
   getAllLife(): Record<PlayerID, number>;
+  getAllNames(): Record<PlayerID, string>;
 
   /* Action Points */
   getAp(playerID: PlayerID): number | undefined;

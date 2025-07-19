@@ -7,6 +7,7 @@ export class InMemoryGameRepository implements GameRepository {
   private playerIds: PlayerID[] = [];
   private positions: Record<PlayerID, { x: number; y: number }> = {};
   private lifePoints: Record<PlayerID, number> = {};
+  private names: Record<PlayerID, string> = {};
   private actionPoints: Record<PlayerID, number> = {};
 
   constructor(private readonly board: Board) {
@@ -52,8 +53,20 @@ export class InMemoryGameRepository implements GameRepository {
     this.lifePoints[playerID] = life;
   }
 
+  getName(playerID: PlayerID) {
+    return this.names[playerID];
+  }
+
+  setName(playerID: PlayerID, name: string) {
+    this.names[playerID] = name;
+  }
+
   getAllLife() {
     return { ...this.lifePoints };
+  }
+
+  getAllNames() {
+    return { ...this.names };
   }
 
   getAp(playerID: PlayerID) {
